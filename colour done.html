@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Barber | Premium Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* PREMIUM COLOR THEME */
+        :root { 
+            --gold: #d4af37; 
+            --gold-glow: rgba(212, 175, 55, 0.4);
+            --dark-bg: #0f0f0f; 
+            --card-bg: #1a1a1a; 
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+            --accent: #1e1e1e;
+        }
+
+        body { font-family: 'Poppins', sans-serif; margin: 0; background: var(--dark-bg); color: var(--text-main); line-height: 1.6; }
+        .container { max-width: 450px; margin: auto; padding: 20px; min-height: 100vh; position: relative; box-sizing: border-box; border: 1px solid #222; }
+        
+        /* PAGE 1 DESIGN */
+        .other-setting { position: absolute; top: 15px; right: 15px; font-size: 10px; cursor: pointer; text-align: right; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
+        
+        .header-section { text-align: center; margin-top: 40px; padding-bottom: 20px; border-bottom: 2px solid var(--gold); }
+        .header-section h1 { font-family: 'Playfair Display', serif; font-size: 45px; margin: 0; color: var(--gold); letter-spacing: 2px; }
+        .header-section div { font-size: 14px; color: var(--text-dim); }
+
+        .form-label { display: block; margin-top: 25px; font-weight: 600; font-size: 12px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
+        input, select { width: 100%; padding: 12px; margin-top: 8px; border: 1px solid #333; border-radius: 8px; background: var(--accent); color: white; box-sizing: border-box; transition: 0.3s; }
+        input:focus { border-color: var(--gold); outline: none; box-shadow: 0 0 8px var(--gold-glow); }
+
+        .service-box { background: var(--card-bg); border-left: 4px solid var(--gold); padding: 15px; margin-top: 12px; display: flex; justify-content: space-between; align-items: center; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .total-amuont-box { background: var(--gold); color: black; padding: 15px 25px; margin-top: 25px; font-weight: bold; width: fit-content; border-radius: 50px; font-size: 18px; box-shadow: 0 5px 15px var(--gold-glow); }
+        
+        .whatsapp-btn { width: 100%; padding: 18px; background: #25D366; color: white; border: none; margin-top: 30px; font-weight: bold; cursor: pointer; border-radius: 12px; font-size: 16px; text-transform: uppercase; transition: 0.3s; }
+        .whatsapp-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(37,211,102,0.4); }
+
+        /* PAGE 2 OWNER PROFILE */
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--dark-bg); z-index: 1000; overflow-y: auto; padding: 25px; box-sizing: border-box; }
+        .profile-photo { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--gold); margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--gold); box-shadow: 0 0 15px var(--gold-glow); }
+        
+        .option-row { display: flex; justify-content: space-between; align-items: center; border: 1px solid #333; border-radius: 12px; padding: 15px 20px; margin-top: 12px; cursor: pointer; background: var(--card-bg); transition: 0.3s; }
+        .option-row:hover { border-color: var(--gold); background: #222; }
+        .option-tag { background: var(--gold); color: black; border-radius: 6px; padding: 3px 10px; font-size: 10px; font-weight: bold; }
+
+        .save-btn { background: var(--gold); color: black; border: none; padding: 10px 25px; border-radius: 30px; font-weight: bold; cursor: pointer; margin-top: 15px; width: 100%; }
+        
+        .list-item { background: #1a1a1a; padding: 15px; border-radius: 10px; margin-bottom: 10px; border: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+        .btn-done { background: var(--gold); color: black; border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div id="mainPage" class="container">
+    <div class="other-setting" onclick="showLogin()">≡ <br> other <br> settings</div>
+    <div class="header-section">
+        <h1 id="dispBiz">ROYAL</h1>
+        <div id="dispOwner">Premium Barber Shop</div>
+        <div id="dispAddr" style="margin-top:5px; opacity:0.7;">Main Street, City Center</div>
+    </div>
+
+    <label class="form-label">Customer Name</label>
+    <input type="text" id="cName" placeholder="Enter your full name">
+
+    <label class="form-label">Available Services</label>
+    <div id="servCont"></div>
+
+    <div class="total-amuont-box">Total: Rs <span id="totalDisplay">0</span></div>
+
+    <label class="form-label">Booking Date & Time</label>
+    <input type="datetime-local" id="cDate">
+
+    <button class="whatsapp-btn" onclick="sendWA()">Book via WhatsApp</button>
+</div>
+
+<div id="loginPage" class="overlay">
+    <div style="text-align:center; margin-top:50px;">
+        <h2 style="color:var(--gold);">Owner Login</h2>
+        <p style="color:var(--text-dim);">Enter credentials to access settings</p>
+        <input type="email" id="logEmail" placeholder="Email Address" style="margin-bottom:15px;">
+        <input type="password" id="logPass" placeholder="Password">
+        <button class="whatsapp-btn" onclick="verifyLogin()" style="background:var(--gold); color:black;">Login Now</button>
+        <button onclick="closeOverlay('loginPage')" style="margin-top:20px; background:none; border:none; color:var(--text-dim); text-decoration:underline;">Return to Shop</button>
+    </div>
+</div>
+
+<div id="ownerPage" class="overlay">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <button onclick="closeOverlay('ownerPage')" style="background:none; border:none; color:var(--gold); font-size:18px;">← Back</button>
+        <h3 style="margin:0; color:var(--gold);">Owner Control</h3>
+    </div>
+    
+    <div class="profile-photo" style="margin-top:30px;">Profile</div>
+
+    <input type="text" id="eOwner" placeholder="Owner Name">
+    <input type="text" id="ePhone" placeholder="WhatsApp Number">
+    <input type="email" id="eEmail" placeholder="Login Email">
+    <input type="text" id="eAddr" placeholder="Shop Address">
+    <input type="text" id="eBiz" placeholder="Business Name">
+    <input type="password" id="ePass" placeholder="Login Password">
+    <button class="save-btn" onclick="updateDB()">Update Profile Details</button>
+
+    <div style="margin-top:40px; padding-bottom:40px;">
+        <div class="option-row" onclick="openSub('servSet')"><span>Service Settings</span><span class="option-tag">manage</span></div>
+        <div class="option-row" onclick="openSub('staffSet')"><span>Staff Management</span><span class="option-tag">manage</span></div>
+        <div class="option-row" onclick="alert('Business Earnings: Rs ' + db.earnings)"><span>Earnings Report</span><span class="option-tag">view</span></div>
+        <div class="option-row" onclick="openSub('pendSet')"><span>Pending Bookings</span><span class="option-tag" id="pendCount">0</span></div>
+        <div class="option-row" onclick="openSub('doneSet')"><span>Booking History</span><span class="option-tag">view</span></div>
+    </div>
+</div>
+
+<div id="servSet" class="overlay">
+    <button onclick="closeOverlay('servSet')" style="background:none; border:none; color:var(--gold);">← Back</button>
+    <h3 style="color:var(--gold);">Service Management</h3>
+    <div id="adminServs"></div>
+    <div style="background:var(--accent); padding:15px; border-radius:10px; margin-top:20px;">
+        <input type="text" id="nsn" placeholder="New Service Name">
+        <input type="number" id="nsp" placeholder="Service Price">
+        <button onclick="addS()" class="save-btn">+ Add Service</button>
+    </div>
+</div>
+
+<div id="pendSet" class="overlay">
+    <button onclick="closeOverlay('pendSet')" style="background:none; border:none; color:var(--gold);">← Back</button>
+    <h3 style="color:var(--gold);">Pending Appointments</h3>
+    <div id="pendList"></div>
+</div>
+
+<div id="doneSet" class="overlay">
+    <button onclick="closeOverlay('doneSet')" style="background:none; border:none; color:var(--gold);">← Back</button>
+    <h3 style="color:var(--gold);">Completed History</h3>
+    <div id="doneList"></div>
+</div>
+
+<script>
+    let db = JSON.parse(localStorage.getItem('barber_v4')) || {
+        owner: 'Ali Raza', phone: '923209964344', email: 'admin@shop.com', addr: 'Main Street, City Center', biz: 'ROYAL', pass: '1234',
+        services: [{name:'Premium Haircut', price:800}, {name:'Classic Shave', price:300}, {name:'Beard Trim', price:400}], 
+        earnings: 0, pending: [], done: []
+    };
+
+    function save() { localStorage.setItem('barber_v4', JSON.stringify(db)); render(); }
+
+    function render() {
+        document.getElementById('dispBiz').innerText = db.biz;
+        document.getElementById('dispOwner').innerText = db.owner;
+        document.getElementById('dispAddr').innerText = db.addr;
+        document.getElementById('pendCount').innerText = db.pending.length;
+        
+        document.getElementById('servCont').innerHTML = db.services.map(s => `
+            <div class="service-box">
+                <span style="font-weight:600;">${s.name}</span>
+                <span style="color:var(--gold); margin-left:auto; margin-right:15px;">Rs ${s.price}</span>
+                <input type="checkbox" class="cb" data-p="${s.price}" data-n="${s.name}" onchange="calc()" style="width:20px; height:20px; cursor:pointer;">
+            </div>
+        `).join('');
+
+        document.getElementById('eOwner').value = db.owner;
+        document.getElementById('eEmail').value = db.email;
+        document.getElementById('ePhone').value = db.phone;
+        document.getElementById('eAddr').value = db.addr;
+        document.getElementById('eBiz').value = db.biz;
+        document.getElementById('ePass').value = db.pass;
+
+        document.getElementById('adminServs').innerHTML = db.services.map((s,i) => `
+            <div class="list-item">
+                <span>${s.name} (Rs ${s.price})</span>
+                <button onclick="delS(${i})" style="background:red; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">Remove</button>
+            </div>
+        `).join('');
+
+        document.getElementById('pendList').innerHTML = db.pending.map((p,i) => `
+            <div class="list-item">
+                <div>
+                    <div style="font-weight:bold;">${p.name}</div>
+                    <div style="font-size:12px; color:var(--text-dim);">${p.date.replace('T', ' ')}</div>
+                    <div style="color:var(--gold); font-weight:bold;">Rs ${p.total}</div>
+                </div>
+                <button class="btn-done" onclick="markDone(${i})">Complete</button>
+            </div>
+        `).join('');
+
+        document.getElementById('doneList').innerHTML = db.done.map(d => `
+            <div class="list-item" style="opacity:0.7;">
+                <span>${d.name} <br> <small>${d.date.replace('T', ' ')}</small></span>
+                <span style="color:var(--gold);">Rs ${d.total}</span>
+            </div>
+        `).join('');
+    }
+
+    function showLogin() { document.getElementById('loginPage').style.display='block'; }
+    function verifyLogin() {
+        if(document.getElementById('logEmail').value === db.email && document.getElementById('logPass').value === db.pass) {
+            closeOverlay('loginPage'); openSub('ownerPage');
+        } else { alert("Access Denied: Incorrect Email or Password!"); }
+    }
+
+    function calc() {
+        let t = 0; document.querySelectorAll('.cb:checked').forEach(c => t += parseInt(c.dataset.p));
+        document.getElementById('totalDisplay').innerText = t;
+    }
+
+    function sendWA() {
+        let n = document.getElementById('cName').value;
+        let t = document.getElementById('totalDisplay').innerText;
+        let d = document.getElementById('cDate').value;
+        if(!n || t == "0" || !d) return alert("Please fill all details and select services!");
+        
+        db.pending.push({name: n, total: t, date: d});
+        save();
+        
+        let msg = `*NEW BOOKING RECEIVED*%0A--------------------------%0A*Client:* ${n}%0A*Total Amount:* Rs ${t}%0A*Schedule:* ${d.replace('T', ' ')}%0A--------------------------`;
+        window.open(`https://wa.me/${db.phone}?text=${msg}`);
+    }
+
+    function markDone(i) {
+        let p = db.pending.splice(i,1)[0];
+        db.done.push(p);
+        db.earnings += parseInt(p.total);
+        save();
+    }
+
+    function addS() {
+        let n = document.getElementById('nsn').value;
+        let p = document.getElementById('nsp').value;
+        if(n && p) { db.services.push({name:n, price:parseInt(p)}); save(); document.getElementById('nsn').value=''; document.getElementById('nsp').value=''; }
+    }
+    function delS(i) { if(confirm("Delete this service?")) { db.services.splice(i,1); save(); } }
+
+    function updateDB() {
+        db.owner = document.getElementById('eOwner').value;
+        db.email = document.getElementById('eEmail').value;
+        db.phone = document.getElementById('ePhone').value;
+        db.addr = document.getElementById('eAddr').value;
+        db.biz = document.getElementById('eBiz').value;
+        db.pass = document.getElementById('ePass').value;
+        save(); alert("Owner Profile Updated Successfully!");
+    }
+
+    function openSub(id) { document.getElementById(id).style.display='block'; }
+    function closeOverlay(id) { document.getElementById(id).style.display='none'; }
+
+    render();
+</script>
+</body>
+</html>
